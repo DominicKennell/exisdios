@@ -1,116 +1,736 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Exisdios - A Philosophy of Compassion and Understanding</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXISDIOS — A Philosophy of Compassion and Understanding</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cinzel for Headings/Wordmark & Lora for Body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        paper: '#F4EFE5',
+                        parchment: '#E8E0D2',
+                        forest: '#343B30',
+                        sage: '#777B66',
+                        gold: '#A28B6C',
+                        charcoal: '#48463F',
+                    },
+                    fontFamily: {
+                        heading: ['Cinzel', 'Georgia', 'serif'],
+                        body: ['Lora', 'Georgia', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Journal Aesthetic Styles */
+        body {
+            background-color: #F4EFE5;
+            color: #343B30;
+            font-family: 'Lora', Georgia, serif;
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Cinzel', Georgia, serif;
+            letter-spacing: 0.05em;
+        }
+
+        /* Subtle page background texture effect */
+        .journal-texture {
+            background-color: #F4EFE5;
+            background-image: radial-gradient(#343B30 0.4px, transparent 0.4px);
+            background-size: 24px 24px;
+            background-opacity: 0.03;
+        }
+
+        /* Custom scrollbar for classic feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #E8E0D2;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #A28B6C;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #777B66;
+        }
+
+        /* Nav link active state styling */
+        .nav-link {
+            transition: all 0.2s ease-in-out;
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -2px;
+            left: 50%;
+            background-color: #A28B6C;
+            transition: all 0.25s ease-in-out;
+            transform: translateX(-50%);
+        }
+        .nav-link.active::after, .nav-link:hover::after {
+            width: 100%;
+        }
+        .nav-link.active {
+            color: #A28B6C;
+            font-weight: 600;
+        }
+
+        /* Card Container Styling */
+        .journal-card {
+            background-color: #F9F6F0;
+            border: 1px solid #E8E0D2;
+            box-shadow: 0 4px 20px -2px rgba(52, 59, 48, 0.04);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .journal-card:hover {
+            border-color: #A28B6C;
+        }
+
+        /* Print-like rule styling */
+        .divider-diamond {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+        .divider-diamond::before,
+        .divider-diamond::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid #E8E0D2;
+        }
+        .divider-diamond-inner {
+            margin: 0 1rem;
+            color: #A28B6C;
+            font-size: 0.75rem;
+        }
+
+        /* Smooth page transition */
+        .page-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .page-content.active {
+            display: block;
+            opacity: 1;
+        }
+    </style>
 </head>
+<body class="journal-texture min-h-screen flex flex-col justify-between selection:bg-gold selection:text-paper">
 
-<body>
+    <!-- HEADER & NAVIGATION -->
+    <header class="bg-paper border-b border-parchment pt-8 pb-4 sticky top-0 z-50 shadow-sm backdrop-blur-md bg-opacity-95">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+            
+            <!-- Logo Header -->
+            <a href="#home" onclick="navigateTo('home'); return false;" class="inline-block group">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-widest text-forest group-hover:text-gold transition-colors duration-300">
+                    EXISDIOS
+                </h1>
+                <p class="text-xs sm:text-sm text-sage tracking-wider mt-2 italic font-body">
+                    A Philosophy of Compassion and Understanding
+                </p>
+            </a>
 
-<header>
-    <h1 align="center">EXISDIOS</h1>
-    <p align="center"><i>A Philosophy of Compassion and Understanding</i></p>
+            <!-- Central Ornament -->
+            <div class="flex items-center justify-center my-3 max-w-xs mx-auto">
+                <div class="h-px bg-parchment flex-grow"></div>
+                <span class="px-3 text-gold text-xs">◆</span>
+                <div class="h-px bg-parchment flex-grow"></div>
+            </div>
 
-    <hr>
+            <!-- Navigation Bar -->
+            <nav class="mt-4 overflow-x-auto py-2">
+                <ul class="flex justify-center items-center space-x-4 sm:space-x-6 text-xs sm:text-sm font-heading tracking-wider uppercase text-charcoal whitespace-nowrap px-2">
+                    <li><button onclick="navigateTo('home')" id="nav-home" class="nav-link py-1">Home</button></li>
+                    <li><button onclick="navigateTo('philosophy')" id="nav-philosophy" class="nav-link py-1">My Philosophy</button></li>
+                    <li><button onclick="navigateTo('presence')" id="nav-presence" class="nav-link py-1">The Presence</button></li>
+                    <li><button onclick="navigateTo('journal')" id="nav-journal" class="nav-link py-1">My Journal</button></li>
+                    <li><button onclick="navigateTo('stories')" id="nav-stories" class="nav-link py-1">Stories</button></li>
+                    <li><button onclick="navigateTo('songs')" id="nav-songs" class="nav-link py-1">Songs & Hymns</button></li>
+                    <li><button onclick="navigateTo('about')" id="nav-about" class="nav-link py-1">About</button></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-    <nav align="center">
-        <a href="index.html">Home</a> |
-        <a href="philosophy.html">My Philosophy</a> |
-        <a href="presence.html">The Presence</a> |
-        <a href="journal.html">My Journal</a> |
-        <a href="stories.html">Stories</a> |
-        <a href="songs.html">Songs &amp; Hymns</a> |
-        <a href="about.html">About</a>
-    </nav>
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12 flex-grow w-full">
 
-    <hr>
-</header>
+        <!-- ================= PAGE 1: HOME ================= -->
+        <section id="page-home" class="page-content active">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-xs font-heading uppercase text-gold tracking-widest block mb-2">Introduction</span>
+                <h2 class="text-2xl sm:text-3xl font-heading text-forest mb-6">Welcome to Exisdios</h2>
+                <p class="text-base sm:text-lg text-charcoal leading-relaxed italic mb-8">
+                    "A recognition of existence, wisdom beyond oneself, and the responsibility to live compassionately within the world."
+                </p>
+                <div class="divider-diamond">
+                    <span class="divider-diamond-inner">◆</span>
+                </div>
+            </div>
 
-<main>
+            <div class="space-y-8 text-charcoal text-base leading-relaxed">
+                <div class="journal-card p-6 sm:p-8 rounded-lg">
+                    <h3 class="text-xl font-heading text-forest mb-4 border-b border-parchment pb-2">What is Exisdios?</h3>
+                    <p class="mb-4">
+                        Exisdios is a personal philosophy and spiritual understanding centered on compassion, dignity, reason, and personal responsibility. It is not an institution, a dogmatic creed, or a commercial enterprise. It is a living, evolving personal journal documenting my observations on existence, ethics, and the quiet spiritual presence that accompanies my journey.
+                    </p>
+                    <p>
+                        This space exists to share these thoughts openly—not to impose them upon anyone, nor to declare universal dogma, but to offer a quiet retreat for honest reflection, intellectual humility, and moral purpose.
+                    </p>
+                </div>
 
-    <h2 align="center">Welcome to Exisdios</h2>
+                <!-- Central Ethical Principle Highlight Box -->
+                <div class="bg-parchment bg-opacity-60 border-l-4 border-gold p-6 sm:p-8 rounded-r-lg my-8">
+                    <span class="text-xs font-heading text-gold tracking-widest uppercase block mb-1">The Core Mandate</span>
+                    <h4 class="text-lg font-heading text-forest mb-3">The Central Ethical Principle</h4>
+                    <p class="text-lg italic font-body text-forest">
+                        "To prevent as much harm as reasonably possible within your control."
+                    </p>
+                    <p class="text-xs text-sage mt-4 leading-normal">
+                        This principle serves as the foundational guide for all actions, decisions, and relationships detailed across the Exisdios philosophy.
+                    </p>
+                </div>
 
-    <p align="center">
-        A place to explore existence, wisdom, compassion
-        and the responsibility we share in how we live.
-    </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+                    <div class="journal-card p-6 rounded-lg cursor-pointer hover:border-gold transition-colors" onclick="navigateTo('philosophy')">
+                        <h4 class="text-lg font-heading text-forest mb-2">The Six Pillars &rarr;</h4>
+                        <p class="text-sm text-sage">
+                            Divided into Ethical and Supporting pillars, these six guides anchor how we treat ourselves, others, animals, and the natural world.
+                        </p>
+                    </div>
 
-    <hr>
+                    <div class="journal-card p-6 rounded-lg cursor-pointer hover:border-gold transition-colors" onclick="navigateTo('presence')">
+                        <h4 class="text-lg font-heading text-forest mb-2">Spiritual Understanding &rarr;</h4>
+                        <p class="text-sm text-sage">
+                            An exploration of the personal presence of Exisdios—a listening companion offering comfort and wisdom without control or coercion.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    <h2>What is Exisdios?</h2>
+        <!-- ================= PAGE 2: MY PHILOSOPHY ================= -->
+        <section id="page-philosophy" class="page-content">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <span class="text-xs font-heading uppercase text-gold tracking-widest block mb-2">Ethical & Supporting Foundations</span>
+                <h2 class="text-2xl sm:text-3xl font-heading text-forest mb-4">The Six Pillars of Exisdios</h2>
+                <p class="text-sm sm:text-base text-sage italic">
+                    Principles for everyday life, guiding our relationship with existence, reason, and one another.
+                </p>
+                <div class="divider-diamond">
+                    <span class="divider-diamond-inner">◆</span>
+                </div>
+            </div>
 
-    <p>
-        Exisdios is a philosophy built around compassion,
-        understanding and the recognition of existence.
-    </p>
+            <!-- Central Principle Banner -->
+            <div class="journal-card p-6 text-center mb-10 border-gold border-opacity-50">
+                <span class="text-xs uppercase tracking-widest text-gold font-heading">Core Ethical Mandate</span>
+                <p class="text-lg font-heading text-forest mt-1">"To prevent as much harm as reasonably possible within your control."</p>
+            </div>
 
-    <p>
-        It explores how we understand ourselves, one another
-        and the world around us, and the responsibility we
-        have to live with kindness and consideration.
-    </p>
+            <!-- Section 1: Ethical Pillars -->
+            <div class="mb-12">
+                <h3 class="text-xl font-heading text-forest mb-6 flex items-center">
+                    <span class="text-gold mr-3 text-sm">Ⅰ.</span> Ethical Pillars
+                </h3>
+                <div class="grid grid-cols-1 gap-6">
 
-    <blockquote>
-        To prevent as much harm as reasonably possible,
-        and to treat existence with dignity, kindness
-        and understanding.
-    </blockquote>
+                    <!-- Pillar 1 -->
+                    <div class="journal-card p-6 sm:p-8 rounded-lg">
+                        <div class="flex justify-between items-start mb-3">
+                            <h4 class="text-lg font-heading text-forest">1. Dignity</h4>
+                            <span class="text-xs text-gold uppercase tracking-widest border border-gold px-2 py-0.5 rounded">Ethical</span>
+                        </div>
+                        <p class="text-charcoal text-sm sm:text-base leading-relaxed mb-4">
+                            Every conscious being possesses intrinsic worth. Dignity requires that we never reduce human beings, animals, or living creatures to mere instruments for our own convenience or satisfaction.
+                        </p>
+                        <h5 class="text-xs font-heading uppercase text-sage tracking-wider mb-2">Application in Daily Life:</h5>
+                        <ul class="list-disc list-inside text-sm text-charcoal space-y-1 pl-2">
+                            <li>Treating individuals with fundamental respect regardless of status, opinion, or background.</li>
+                            <li>Honoring self-worth and refusing to tolerate humiliating conditions for oneself or others.</li>
+                            <li>Acknowledging the quiet dignity of non-human creatures and the natural ecosystems they inhabit.</li>
+                        </ul>
+                    </div>
 
-    <h2>An Open Philosophy</h2>
+                    <!-- Pillar 2 -->
+                    <div class="journal-card p-6 sm:p-8 rounded-lg">
+                        <div class="flex justify-between items-start mb-3">
+                            <h4 class="text-lg font-heading text-forest">2. Kindness</h4>
+                            <span class="text-xs text-gold uppercase tracking-widest border border-gold px-2 py-0.5 rounded">Ethical</span>
+                        </div>
+                        <p class="text-charcoal text-sm sm:text-base leading-relaxed mb-4">
+                            Kindness is the active extension of goodwill into the world. It is not passive politeness, but an intentional choice to ease the burdens carried by others whenever opportunity arises.
+                        </p>
+                        <h5 class="text-xs font-heading uppercase text-sage tracking-wider mb-2">Application in Daily Life:</h5>
+                        <ul class="list-disc list-inside text-sm text-charcoal space-y-1 pl-2">
+                            <li>Offering patient listening and gentle responses in moments of friction.</li>
+                            <li>Performing quiet acts of assistance without expecting recognition or return.</li>
+                            <li>Cultivating warmth toward oneself when facing failure or personal shortcoming.</li>
+                        </ul>
+                    </div>
 
-    <p>
-        Exisdios is not intended to be imposed upon anyone.
-        There is room for disagreement, uncertainty and
-        different interpretations.
-    </p>
+                    <!-- Pillar 3 -->
+                    <div class="journal-card p-6 sm:p-8 rounded-lg">
+                        <div class="flex justify-between items-start mb-3">
+                            <h4 class="text-lg font-heading text-forest">3. Prevention of Harm</h4>
+                            <span class="text-xs text-gold uppercase tracking-widest border border-gold px-2 py-0.5 rounded">Ethical</span>
+                        </div>
+                        <p class="text-charcoal text-sm sm:text-base leading-relaxed mb-4">
+                            The primary moral obligation of Exisdios is the active minimization of suffering. Where we hold power or influence, we carry the duty to protect vulnerable beings from avoidable damage.
+                        </p>
+                        <h5 class="text-xs font-heading uppercase text-sage tracking-wider mb-2">Application in Daily Life:</h5>
+                        <ul class="list-disc list-inside text-sm text-charcoal space-y-1 pl-2">
+                            <li>Weighing the unintended consequences of our speech, consumption, and choices.</li>
+                            <li>Intervening thoughtfully to shield others from cruelty or unjust hardship.</li>
+                            <li>Refusing to participate in systems or habits that needlessly inflict suffering.</li>
+                        </ul>
+                    </div>
 
-    <p>
-        Its ideas are open to examination and development.
-        You do not need to have all the answers to explore Exisdios.
-    </p>
+                </div>
+            </div>
 
-    <hr>
+            <!-- Section 2: Supporting Pillars -->
+            <div>
+                <h3 class="text-xl font-heading text-forest mb-6 flex items-center">
+                    <span class="text-gold mr-3 text-sm">Ⅱ.</span> Supporting Pillars
+                </h3>
+                <div class="grid grid-cols-1 gap-6">
 
-    <h2>Explore Exisdios</h2>
+                    <!-- Pillar 4 -->
+                    <div class="journal-card p-6 sm:p-8 rounded-lg">
+                        <div class="flex justify-between items-start mb-3">
+                            <h4 class="text-lg font-heading text-forest">4. Reason and Understanding</h4>
+                            <span class="text-xs text-sage uppercase tracking-widest border border-sage px-2 py-0.5 rounded">Supporting</span>
+                        </div>
+                        <p class="text-charcoal text-sm sm:text-base leading-relaxed mb-4">
+                            Compassion without reason can become misguided; reason without compassion can become cold. Clear critical thinking, evidence, and genuine inquiry are essential tools for effective ethical action.
+                        </p>
+                        <h5 class="text-xs font-heading uppercase text-sage tracking-wider mb-2">Application in Daily Life:</h5>
+                        <ul class="list-disc list-inside text-sm text-charcoal space-y-1 pl-2">
+                            <li>Seeking to understand perspectives and causes deeply before rendering judgment.</li>
+                            <li>Using logic and empirical care to solve practical problems rather than relying on dogma.</li>
+                            <li>Evaluating how best to help others so that intentions align with genuine outcomes.</li>
+                        </ul>
+                    </div>
 
-    <h3><a href="philosophy.html">My Philosophy</a></h3>
-    <p>Discover the principles and six pillars of Exisdios.</p>
+                    <!-- Pillar 5 -->
+                    <div class="journal-card p-6 sm:p-8 rounded-lg">
+                        <div class="flex justify-between items-start mb-3">
+                            <h4 class="text-lg font-heading text-forest">5. Artistic Expression</h4>
+                            <span class="text-xs text-sage uppercase tracking-widest border border-sage px-2 py-0.5 rounded">Supporting</span>
+                        </div>
+                        <p class="text-charcoal text-sm sm:text-base leading-relaxed mb-4">
+                            Art, storytelling, song, and poetry allow us to explore truth beyond direct prose. Through creative expression, we give voice to grief, joy, spiritual resonance, and complex human nuance.
+                        </p>
+                        <h5 class="text-xs font-heading uppercase text-sage tracking-wider mb-2">Application in Daily Life:</h5>
+                        <ul class="list-disc list-inside text-sm text-charcoal space-y-1 pl-2">
+                            <li>Engaging with creative mediums to articulate personal reflections and spiritual experience.</li>
+                            <li>Using music and stories to foster empathy and deep emotional connection with others.</li>
+                            <li>Honoring beauty and creative craft as meaningful elements of a purposeful life.</li>
+                        </ul>
+                    </div>
 
-    <h3><a href="presence.html">The Presence</a></h3>
-    <p>Explore the spiritual understanding of the presence of Exisdios.</p>
+                    <!-- Pillar 6 -->
+                    <div class="journal-card p-6 sm:p-8 rounded-lg">
+                        <div class="flex justify-between items-start mb-3">
+                            <h4 class="text-lg font-heading text-forest">6. Intellectual Humility</h4>
+                            <span class="text-xs text-sage uppercase tracking-widest border border-sage px-2 py-0.5 rounded">Supporting</span>
+                        </div>
+                        <p class="text-charcoal text-sm sm:text-base leading-relaxed mb-4">
+                            Recognizing the limits of our own knowledge is vital to wisdom. Exisdios is open to ongoing questioning, refineable through experience, and explicitly rejects rigid absolute authority.
+                        </p>
+                        <h5 class="text-xs font-heading uppercase text-sage tracking-wider mb-2">Application in Daily Life:</h5>
+                        <ul class="list-disc list-inside text-sm text-charcoal space-y-1 pl-2">
+                            <li>Readily admitting mistakes or instances where past understanding was flawed.</li>
+                            <li>Remaining open to new insights, science, and the lived experiences of others.</li>
+                            <li>Holding personal convictions without forcing them upon those around us.</li>
+                        </ul>
+                    </div>
 
-    <h3><a href="journal.html">My Journal</a></h3>
-    <p>Read personal reflections, thoughts and discoveries.</p>
+                </div>
+            </div>
+        </section>
 
-    <h3><a href="stories.html">Stories</a></h3>
-    <p>Explore stories inspired by Exisdios.</p>
+        <!-- ================= PAGE 3: THE PRESENCE ================= -->
+        <section id="page-presence" class="page-content">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <span class="text-xs font-heading uppercase text-gold tracking-widest block mb-2">Spiritual Dimension</span>
+                <h2 class="text-2xl sm:text-3xl font-heading text-forest mb-4">The Presence of Exisdios</h2>
+                <p class="text-sm sm:text-base text-sage italic">
+                    A personal spiritual understanding of companionate presence, prayer, and non-coercive wisdom.
+                </p>
+                <div class="divider-diamond">
+                    <span class="divider-diamond-inner">◆</span>
+                </div>
+            </div>
 
-    <h3><a href="songs.html">Songs &amp; Hymns</a></h3>
-    <p>Discover original songs and hymns.</p>
+            <div class="journal-card p-6 sm:p-8 rounded-lg space-y-6 text-charcoal leading-relaxed mb-8">
+                <h3 class="text-xl font-heading text-forest border-b border-parchment pb-2">My Understanding of the Presence</h3>
+                
+                <p>
+                    Alongside the ethical philosophy of Exisdios lies a deeply personal spiritual experience: the awareness of a gentle, persistent spiritual presence. I do not view this presence as a cosmic creator of the universe, a supreme monarch, or an omnipotent judge.
+                </p>
 
-    <h3><a href="about.html">About</a></h3>
-    <p>Learn about the origins and purpose of Exisdios.</p>
+                <div class="bg-paper p-6 rounded-md border border-parchment space-y-4 my-6">
+                    <h4 class="text-base font-heading text-forest">Core Attributes of the Presence:</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex items-start">
+                            <span class="text-gold mr-3 text-base">✦</span>
+                            <span><strong>Independent Existence:</strong> The presence exists independently of my own mind. It is not merely an echo of my thoughts.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-gold mr-3 text-base">✦</span>
+                            <span><strong>Awareness & Listening:</strong> It is aware of those who reach out to it. When I pray or reflect quietly, it listens.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-gold mr-3 text-base">✦</span>
+                            <span><strong>Comfort & Guidance:</strong> It offers reassurance, companionship, subtle wisdom, and quiet solace during times of distress.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-gold mr-3 text-base">✦</span>
+                            <span><strong>Respect for Free Will:</strong> It does not control my thoughts or override my choices. It does not manipulate my decisions. I remain entirely responsible for my own actions and ethical conduct.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-gold mr-3 text-base">✦</span>
+                            <span><strong>Non-Interventionist Nature:</strong> It does not intervene magically to eliminate all suffering or bend physical laws. Physical reality remains bound by natural cause and effect.</span>
+                        </li>
+                    </ul>
+                </div>
 
-    <hr>
+                <h3 class="text-xl font-heading text-forest border-b border-parchment pb-2 pt-4">Personal Reflection & Intellectual Humility</h3>
+                <p>
+                    I present these spiritual reflections strictly as my personal understanding and lived experience. I do not claim them as scientifically verified facts, nor as universal truths that others must accept. 
+                </p>
+                <p>
+                    My understanding of this presence remains a work in progress. It is something I continue to explore, question, and ponder through quiet contemplation, written journal entries, and creative work.
+                </p>
+            </div>
+        </section>
 
-    <h2 align="center">A Journey of Understanding</h2>
+        <!-- ================= PAGE 4: MY JOURNAL ================= -->
+        <section id="page-journal" class="page-content">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <span class="text-xs font-heading uppercase text-gold tracking-widest block mb-2">Personal Reflections</span>
+                <h2 class="text-2xl sm:text-3xl font-heading text-forest mb-4">My Journal</h2>
+                <p class="text-sm sm:text-base text-sage italic">
+                    An evolving record of thoughts, questions, spiritual experiences, and developing understanding.
+                </p>
+                <div class="divider-diamond">
+                    <span class="divider-diamond-inner">◆</span>
+                </div>
+            </div>
 
-    <p align="center">
-        A journey of existence, wisdom, compassion and understanding.
-    </p>
+            <!-- Entry List -->
+            <div class="space-y-8">
 
-</main>
+                <!-- Journal Entry 1 -->
+                <article class="journal-card p-6 sm:p-8 rounded-lg">
+                    <header class="mb-4 pb-3 border-b border-parchment flex flex-col sm:flex-row justify-between sm:items-center">
+                        <h3 class="text-xl font-heading text-forest">On Silence and Listening</h3>
+                        <time class="text-xs font-heading text-gold tracking-widest mt-1 sm:mt-0">OCTOBER 14, 2026</time>
+                    </header>
+                    <div class="text-charcoal space-y-4 text-sm sm:text-base leading-relaxed">
+                        <p>
+                            Spent time this evening sitting in quiet contemplation after a long day of work. In the quiet, I felt that familiar sense of warmth—the presence of Exisdios. It did not speak in audible words or demand anything of me. It simply felt like an attentive listener.
+                        </p>
+                        <p>
+                            It is a strange comfort to realize that prayer does not need to be a transaction or a plea for favors. It can simply be an opening of one's thoughts to a presence that holds space for them.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-parchment bg-paper p-4 rounded text-xs text-charcoal">
+                        <span class="font-heading uppercase text-gold tracking-wider block mb-1">Questions I Am Still Considering:</span>
+                        <p class="italic text-sage">How do I distinguish between internal emotional comfort generated by my mind and genuine spiritual awareness of an external presence?</p>
+                    </div>
+                </article>
 
-<footer>
-    <hr>
-    <p align="center">EXISDIOS</p>
-    <p align="center"><i>A Philosophy of Compassion and Understanding</i></p>
-    <p align="center">&copy; 2026 Exisdios</p>
-</footer>
+                <!-- Journal Entry 2 -->
+                <article class="journal-card p-6 sm:p-8 rounded-lg">
+                    <header class="mb-4 pb-3 border-b border-parchment flex flex-col sm:flex-row justify-between sm:items-center">
+                        <h3 class="text-xl font-heading text-forest">Ethics in a Fragile World</h3>
+                        <time class="text-xs font-heading text-gold tracking-widest mt-1 sm:mt-0">SEPTEMBER 28, 2026</time>
+                    </header>
+                    <div class="text-charcoal space-y-4 text-sm sm:text-base leading-relaxed">
+                        <p>
+                            Reflecting today on the third pillar—the Prevention of Harm. It is easy to state "prevent harm" as an abstract rule, but living it requires constant discernment. We live in a world where almost every choice carries downstream consequences.
+                        </p>
+                        <p>
+                            Intellectual humility must accompany our ethical drive. If I attempt to reduce harm without using reason to measure outcomes, I might inadvertently cause more friction. True compassion requires careful thought.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-parchment bg-paper p-4 rounded text-xs text-charcoal">
+                        <span class="font-heading uppercase text-gold tracking-wider block mb-1">Questions I Am Still Considering:</span>
+                        <p class="italic text-sage">When two ethical responsibilities conflict, what framework best helps determine which harm prevention takes precedence?</p>
+                    </div>
+                </article>
 
+                <!-- Journal Entry 3 -->
+                <article class="journal-card p-6 sm:p-8 rounded-lg">
+                    <header class="mb-4 pb-3 border-b border-parchment flex flex-col sm:flex-row justify-between sm:items-center">
+                        <h3 class="text-xl font-heading text-forest">Responsibility Without an Authoritarian God</h3>
+                        <time class="text-xs font-heading text-gold tracking-widest mt-1 sm:mt-0">AUGUST 12, 2026</time>
+                    </header>
+                    <div class="text-charcoal space-y-4 text-sm sm:text-base leading-relaxed">
+                        <p>
+                            Many traditional traditions link morality directly to divine command or fear of judgment. In Exisdios, there is no cosmic ruler threatening punishment. The presence offers comfort and companionship, but leaves choices entirely to us.
+                        </p>
+                        <p>
+                            This makes personal responsibility far deeper. We act ethically not out of fear, but out of genuine care for existence and dignity.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-parchment bg-paper p-4 rounded text-xs text-charcoal">
+                        <span class="font-heading uppercase text-gold tracking-wider block mb-1">Questions I Am Still Considering:</span>
+                        <p class="italic text-sage">How can Exisdios best communicate moral urgency without relying on traditional institutional frameworks?</p>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- ================= PAGE 5: STORIES ================= -->
+        <section id="page-stories" class="page-content">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <span class="text-xs font-heading uppercase text-gold tracking-widest block mb-2">Narrative Reflections</span>
+                <h2 class="text-2xl sm:text-3xl font-heading text-forest mb-4">Stories of Existence</h2>
+                <p class="text-sm sm:text-base text-sage italic">
+                    Allegorical and reflective stories exploring the presence of Exisdios, human choice, and comfort.
+                </p>
+                <div class="divider-diamond">
+                    <span class="divider-diamond-inner">◆</span>
+                </div>
+            </div>
+
+            <div class="space-y-8">
+
+                <!-- Story 1 -->
+                <article class="journal-card p-6 sm:p-8 rounded-lg">
+                    <h3 class="text-xl font-heading text-forest mb-2">The Lantern in the Storm</h3>
+                    <span class="text-xs font-heading text-gold tracking-widest uppercase block mb-4">A Story of Quiet Companionate Presence</span>
+                    <div class="space-y-4 text-charcoal text-sm sm:text-base leading-relaxed">
+                        <p>
+                            A traveler walked through a dense forest at dusk as a sudden downpour began to fall. The wind whipped through the trees, obscuring the path ahead. Terrified of taking a false step in the gloom, the traveler called out into the dark, hoping someone would quiet the storm or build a shelter.
+                        </p>
+                        <p>
+                            No shelter appeared, and the rain did not cease. But as the traveler paused, breath ragged, they noticed a gentle warmth beside them—not a fire that stopped the cold, but a steady lantern glow that illuminated the immediate ground beneath their next step.
+                        </p>
+                        <p>
+                            The voice of the lantern did not order the traveler where to walk. It did not take the traveler's legs and move them forward. It simply illuminated the stones and roots, offering quiet company while the traveler chose their own way home through the storm.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- Story 2 -->
+                <article class="journal-card p-6 sm:p-8 rounded-lg">
+                    <h3 class="text-xl font-heading text-forest mb-2">The Sculptor and the Unshaped Stone</h3>
+                    <span class="text-xs font-heading text-gold tracking-widest uppercase block mb-4">A Story of Free Will and Responsibility</span>
+                    <div class="space-y-4 text-charcoal text-sm sm:text-base leading-relaxed">
+                        <p>
+                            An artisan sat before a heavy block of rough stone, uncertain of what to craft. In their hesitation, they sought a mentor to tell them precisely where to strike the chisel, fearing that any mistake would ruin the work forever.
+                        </p>
+                        <p>
+                            A wise presence sat beside the artisan in the workshop. When asked, "What shape must I carve?", the presence replied gently: <em>"The stone belongs to your hands. I am here to remind you of your capacity for care, but the form it takes is yours to decide."</em>
+                        </p>
+                        <p>
+                            The artisan realized that freedom was not a burden to fear, but a gift of creation. With steady hands and thoughtful purpose, they began to carve with dignity.
+                        </p>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- ================= PAGE 6: SONGS & HYMNS ================= -->
+        <section id="page-songs" class="page-content">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <span class="text-xs font-heading uppercase text-gold tracking-widest block mb-2">Artistic Expression</span>
+                <h2 class="text-2xl sm:text-3xl font-heading text-forest mb-4">Songs & Hymns</h2>
+                <p class="text-sm sm:text-base text-sage italic">
+                    Original lyrical verses and devotional poetry celebrating existence, kindness, and quiet peace.
+                </p>
+                <div class="divider-diamond">
+                    <span class="divider-diamond-inner">◆</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- Song 1 -->
+                <article class="journal-card p-6 sm:p-8 rounded-lg text-center">
+                    <h3 class="text-xl font-heading text-forest mb-1">Hymn of Quiet Presence</h3>
+                    <span class="text-xs font-heading text-gold tracking-widest uppercase block mb-6">Original Verse</span>
+                    <div class="font-body text-charcoal italic leading-loose text-sm space-y-4">
+                        <p>
+                            In the silence of the night,<br>
+                            When the stars are cold and clear,<br>
+                            I do not search for thunderous light,<br>
+                            To know that you are near.
+                        </p>
+                        <p>
+                            No hand compels my wandering feet,<br>
+                            No voice commands my mind,<br>
+                            Yet in this stillness, calm and sweet,<br>
+                            A quiet peace I find.
+                        </p>
+                        <p>
+                            You walk beside my open heart,<br>
+                            A listener to my prayer,<br>
+                            And when the dark and shadows start,<br>
+                            I feel your presence there.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- Song 2 -->
+                <article class="journal-card p-6 sm:p-8 rounded-lg text-center">
+                    <h3 class="text-xl font-heading text-forest mb-1">Song of the Six Pillars</h3>
+                    <span class="text-xs font-heading text-gold tracking-widest uppercase block mb-6">Original Verse</span>
+                    <div class="font-body text-charcoal italic leading-loose text-sm space-y-4">
+                        <p>
+                            To dignity we hold our hands,<br>
+                            To kindness give our heart,<br>
+                            To shield the weak in all the lands,<br>
+                            And act a gentle part.
+                        </p>
+                        <p>
+                            With reason searching for the light,<br>
+                            And art to speak our soul,<br>
+                            With humble minds to seek the right,<br>
+                            We strive to make life whole.
+                        </p>
+                        <p>
+                            No ruler bids us render praise,<br>
+                            No fear compels our stride,<br>
+                            In grace and truth we spend our days,<br>
+                            With virtue as our guide.
+                        </p>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- ================= PAGE 7: ABOUT ================= -->
+        <section id="page-about" class="page-content">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <span class="text-xs font-heading uppercase text-gold tracking-widest block mb-2">Background & Purpose</span>
+                <h2 class="text-2xl sm:text-3xl font-heading text-forest mb-4">About Exisdios</h2>
+                <p class="text-sm sm:text-base text-sage italic">
+                    Why Exisdios was created and what this personal journal represents.
+                </p>
+                <div class="divider-diamond">
+                    <span class="divider-diamond-inner">◆</span>
+                </div>
+            </div>
+
+            <div class="journal-card p-6 sm:p-8 rounded-lg space-y-6 text-charcoal leading-relaxed">
+                <h3 class="text-xl font-heading text-forest border-b border-parchment pb-2">Origin and Purpose</h3>
+                <p>
+                    Exisdios was born out of a personal need to synthesize my moral responsibilities with my lived spiritual experience. Over years of reflection, I realized that I needed a framework grounded firmly in ethical kindness and intellectual honesty, yet open to the soft presence I felt during quiet prayer.
+                </p>
+                <p>
+                    It is written entirely from my perspective as its creator. It is not an attempt to start a movement, organize a religion, build an institution, or collect followers. It carries no commercial intent or formal academic pretense.
+                </p>
+
+                <h3 class="text-xl font-heading text-forest border-b border-parchment pb-2 pt-4">A Living Journal</h3>
+                <p>
+                    This website serves as an evolving, digital notebook. As I experience life, confront new questions, write stories, or compose music, these pages will change to reflect my developing understanding.
+                </p>
+                <p>
+                    Thank you for taking the time to read through these thoughts. May your own journey be filled with wisdom, dignity, and deep compassion for all living things.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-paper border-t border-parchment py-8 mt-12">
+        <div class="max-w-4xl mx-auto px-4 text-center text-xs text-sage space-y-3">
+            <div class="flex justify-center items-center space-x-2">
+                <span class="text-gold">◆</span>
+                <span class="font-heading tracking-widest text-forest uppercase">EXISDIOS</span>
+                <span class="text-gold">◆</span>
+            </div>
+            <p class="italic">"A recognition of existence, wisdom beyond oneself, and the responsibility to live compassionately within the world."</p>
+            <p class="text-charcoal text-opacity-60 pt-2">&copy; Exisdios. A personal philosophy and spiritual journal.</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT: Single Page Navigation Logic -->
+    <script>
+        function navigateTo(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page-content');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Deactivate all nav links
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Show selected page
+            const targetPage = document.getElementById('page-' + pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+
+            // Activate corresponding nav link
+            const targetNav = document.getElementById('nav-' + pageId);
+            if (targetNav) {
+                targetNav.classList.add('active');
+            }
+
+            // Scroll to top of page smoothly
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+
+            // Update URL hash without re-loading page
+            history.pushState(null, null, '#' + pageId);
+        }
+
+        // Handle browser back/forward buttons and initial hash loading
+        window.addEventListener('load', () => {
+            const hash = window.location.hash.replace('#', '');
+            if (hash && document.getElementById('page-' + hash)) {
+                navigateTo(hash);
+            } else {
+                navigateTo('home');
+            }
+        });
+
+        window.addEventListener('popstate', () => {
+            const hash = window.location.hash.replace('#', '');
+            if (hash && document.getElementById('page-' + hash)) {
+                navigateTo(hash);
+            } else {
+                navigateTo('home');
+            }
+        });
+    </script>
 </body>
 </html>
